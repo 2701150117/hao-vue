@@ -6,6 +6,7 @@ Vue.use(Router);
 
 //配置路由
 import home from '../page/home'
+import catalog from '../page/catalog'
 
 export default new Router({
   routes: [
@@ -17,6 +18,10 @@ export default new Router({
         path: '/home',
         name: '新书盘点',
         component: home,
+      }, {
+        path: '/catalog',
+        name: '书刊编目',
+        component: catalog,
       }]
     }
   ]

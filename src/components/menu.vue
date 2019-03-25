@@ -19,7 +19,7 @@
                 <span>书刊管理</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item index="2-1">书刊编目</el-menu-item>
+                <el-menu-item index="catalog">书刊编目</el-menu-item>
                 <el-menu-item index="2-2">书刊录入</el-menu-item>
                 <el-menu-item index="2-3">书刊查询</el-menu-item>
                 <el-menu-item index="2-4">书刊下架</el-menu-item>
