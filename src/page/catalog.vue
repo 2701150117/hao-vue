@@ -1,8 +1,8 @@
 <template>
   <el-table :data="tableData" stripe style="width: 100%" @current-chagne="currentChange">
-    <el-table-column prop="date" label="日期" width="180"/>
-    <el-table-column prop="name" label="姓名" width="180"/>
-    <el-table-column prop="address" label="地址"/>
+    <el-table-column prop="name" label="书名" width="180"/>
+    <el-table-column prop="author" label="作者" width="180"/>
+    <el-table-column prop="classify" label="分类"/>
   </el-table>
 </template>
 
@@ -12,21 +12,21 @@
     data() {
       return {
         tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
+          name: 'Android',
+          author: '郭霖',
+          classify: '理工科'
         }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
+          name: '西游记',
+          author: '吴承恩',
+          classify: '神话小说'
         }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
+          name: '飞鸟集',
+          author: '泰戈尔',
+          classify: '文学诗集'
         }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
+          name: '鲁滨孙漂流记',
+          author: '笛福',
+          classify: '长篇小说'
         }]
       }
     },

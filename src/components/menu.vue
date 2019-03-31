@@ -20,9 +20,9 @@
               </template>
               <el-menu-item-group>
                 <el-menu-item index="catalog">书刊编目</el-menu-item>
-                <el-menu-item index="2-2">书刊录入</el-menu-item>
-                <el-menu-item index="2-3">书刊查询</el-menu-item>
-                <el-menu-item index="2-4">书刊下架</el-menu-item>
+                <el-menu-item index="bookInput">书刊录入</el-menu-item>
+                <el-menu-item index="bookquery">书刊查询</el-menu-item>
+                <el-menu-item index="bookundercarriage">书刊下架</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
             <el-submenu index="3">
@@ -31,9 +31,9 @@
                 <span>借阅管理</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item index="3-1">书刊借阅</el-menu-item>
-                <el-menu-item index="3-2">书刊归还</el-menu-item>
-                <el-menu-item index="3-3">书刊挂失</el-menu-item>
+                <el-menu-item index="bookborrow">书刊借阅</el-menu-item>
+                <el-menu-item index="bookreturn">书刊归还</el-menu-item>
+                <el-menu-item index="bookloss">书刊挂失</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
             <el-submenu index="4">
@@ -42,8 +42,8 @@
                 <span>读者管理</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item index="4-1">读者注册</el-menu-item>
-                <el-menu-item index="4-2">读者信息</el-menu-item>
+                <el-menu-item index="readerregister">读者注册</el-menu-item>
+                <el-menu-item index="readerinformation">读者信息</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
           </el-menu>
