@@ -6,50 +6,35 @@
       </el-header>
       <el-container class="main-height">
         <el-aside width="200px" class="main-height">
-          <el-menu :default-active="$route.path" text-color="#fff" active-text-color="#ffd04b"
-                   class="el-menu-vertical-demo main-height" unique-opened router background-color="#545c64"
-                   @select="selectOne" style="border: 0;">
-            <el-menu-item index="home">
+          <el-menu :default-active="$route.path" class="el-menu-vertical-demo" router :unique-opened="true"
+                   menu-trigger="hover">
+            <el-menu-item index="/book">
               <i class="el-icon-news"></i>
-              <span slot="title">新书盘点</span>
+              <span slot="title">图书系统</span>
             </el-menu-item>
-            <el-submenu index="2">
-              <template slot="title">
-                <i class="el-icon-tickets"></i>
-                <span>书刊管理</span>
-              </template>
-              <el-menu-item-group>
-                <el-menu-item index="catalog">书刊编目</el-menu-item>
-                <el-menu-item index="bookInput">书刊录入</el-menu-item>
-                <el-menu-item index="bookquery">书刊查询</el-menu-item>
-                <el-menu-item index="bookundercarriage">书刊下架</el-menu-item>
-              </el-menu-item-group>
-            </el-submenu>
-            <el-submenu index="3">
+            <el-submenu index="bookborrow">
               <template slot="title">
                 <i class="el-icon-view"></i>
-                <span>借阅管理</span>
+                <span slot="title">借阅系统</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item index="bookborrow">书刊借阅</el-menu-item>
-                <el-menu-item index="bookreturn">书刊归还</el-menu-item>
-                <el-menu-item index="bookloss">书刊挂失</el-menu-item>
+                <el-menu-item index="readerlogin">读者管理</el-menu-item>
+                <el-menu-item index="libraryinformation">借阅记录</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
             <el-submenu index="4">
               <template slot="title">
                 <i class="el-icon-edit-outline"></i>
-                <span>读者管理</span>
+                <span>系统</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item index="readerregister">读者注册</el-menu-item>
-                <el-menu-item index="readerinformation">读者信息</el-menu-item>
+                <el-menu-item index="readerlogin">员工登录管理</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
           </el-menu>
         </el-aside>
         <el-container>
-          <el-main>
+          <el-main style="background: #E9EEF3;">
             <router-view/>
           </el-main>
           <el-footer class="foot">
