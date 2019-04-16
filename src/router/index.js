@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import menu from '../components/menu'
+import menu from '../components/Menu'
 
 Vue.use(Router);
 
 //配置路由
 import book from '../page/bookSystem/Book'
+import borrowSystem from '../page/borrowSystem/BorrowSystem'
+import reader from '../page/borrowSystem/Reader'
 
 //配置组件
 import Table from '../components/Table'
@@ -24,7 +26,16 @@ export default new Router({
         path: '/book',
         name: 'book',
         component: book,
-      },]
+      }, {
+        path: 'borrowSystem',
+        name: 'borrowSystem',
+        component: borrowSystem,
+        children: [{
+          path: '/reader',
+          name: 'reader',
+          component: reader,
+        }]
+      }]
     }
   ]
 })
