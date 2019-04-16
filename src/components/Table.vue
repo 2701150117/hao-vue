@@ -6,15 +6,11 @@
                      :width="item.width" :formatter="item.formatter"></el-table-column>
     <el-table-column v-if="columnOperation.show" label="操作">
       <template slot-scope="scope">
-        <el-button
-          size="mini"
-          @click="handleEdit(scope.$index, scope.row)">编辑
-        </el-button>
-        <el-button
-          size="mini"
-          type="danger"
-          @click="handleDelete(scope.$index, scope.row)">删除
-        </el-button>
+        <el-tooltip v-for="(item, key) in columnOperation.operate" :key="key"
+                    v-if='item.show == null ? true : item.show'
+                    :content="item.name" placement="top">
+          <el-button @click="item.click(scope.row)" type="text" :icon="item.icon"></el-button>
+        </el-tooltip>
       </template>
     </el-table-column>
   </el-table>
@@ -24,15 +20,7 @@
   export default {
     name: "Table",
     props: ['data', 'label', 'columnIndex', 'columnOperation'],
-    methods: {
-      handleEdit(index, row) {
-        this.$emit('handleEdit', row);
-      },
-
-      handleDelete(index, row) {
-        this.$emit('handleDelete', row);
-      }
-    }
+    methods: {}
   }
 </script>
 

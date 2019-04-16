@@ -3,7 +3,10 @@
     <span slot="title" class="dialog-title">
       {{dialogTitle}}
     </span>
-    <el-form :model="form" label-position="left" label-width="80px" class="user-form">
+    <el-form :model="form" label-position="left" label-width="100px" class="user-form">
+      <el-form-item label="图书识别码">
+        <el-input v-model="form.bookId" auto-complete="off"></el-input>
+      </el-form-item>
       <el-form-item label="图书名">
         <el-input v-model="form.bookName" auto-complete="off"></el-input>
       </el-form-item>
@@ -37,14 +40,20 @@
 
       //保存操作
       submit() {
-        console.log(this.form);
+        let self = this;
+        self.$http.post('/hao/book/saveOrUpdateBook', self.form, {emulateJSON: true}).then(response =>{
+          this.$notify({
+            title: '成功',
+            type: 'success'
+          });
+          this.closeDialog();
+        }, response => {
+          this.$notify({
+            title: '失败',
+            type: 'error'
+          });
+        })
       },
-
-      //编辑操作
-      editForm(data) {
-        this.form.bookId = data.bookId;
-        this.form.bookName = data.bookName;
-      }
     }
   }
 </script>

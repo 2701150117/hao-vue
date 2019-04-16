@@ -21,7 +21,7 @@
         <el-button size="medium" plain @click="addBook">添加图书</el-button>
       </div>
       <hao-table :data="tableData" :label="labelData" :column-index="columnIndex"
-                 :column-operation="columnOperation" @handleEdit="handleEdit" @handleDelete="handleDelete"></hao-table>
+                 :column-operation="columnOperation"></hao-table>
       <hao-pagination :total="total" :page-size="pageSize" :current-change="currentPage"
                       @sizeChange="handleSizeChange" @currenChange="handleCurrentChange"></hao-pagination>
     </div>
@@ -43,7 +43,7 @@
         },
         labelData: [{
           prop: 'bookId',
-          name: 'Number',
+          name: '图书序列码',
         }, {
           prop: 'bookName',
           name: '图书名',
@@ -61,6 +61,11 @@
           show: true,
           width: 150,
           name: '操作',
+          operate: [{
+            name: '编辑',
+            icon: 'el-icon-delete',
+            click: this.deleteClick,
+          }]
         },
 
         pageSize: 10,
@@ -76,27 +81,7 @@
       this.loadTableDate();
     },
     methods: {
-      //处理编辑
-      handleEdit(row) {
-        this.$refs.bookDialog.editForm(row);
-        this.dialogTitle = '编辑图书';
-        this.dialogVisible = true;
-        let entity = {
-          bookId: row.bookId,
-          bookName: row.bookName
-        };
-        this.$http.post('/hao/book/saveOrUpdateBook', {params: entity}).then(response => {
-          this.$message({
-            showClose: true,
-            message: '编辑成功',
-            type: 'success'
-          });
-        })
-
-      },
-
-      //处理删除
-      handleDelete(row) {
+      deleteClick(row) {
         let entity = {
           bookId: row.bookId,
           bookName: row.bookName
@@ -107,6 +92,7 @@
             message: '删除成功',
             type: 'success'
           });
+          this.loadTableDate();
         })
       },
 
@@ -120,6 +106,7 @@
         };
         self.$http.get('/hao/book/getBook', {params: entity}).then(response => {
           self.tableData = response.body.page.list;
+          self.total = response.body.page.total;
         }, response => {
           console.log(response);
         })
@@ -132,16 +119,19 @@
       },
 
       //分页
-      handleSizeChange() {
-
+      handleSizeChange(pageSize) {
+        this.pageSize = pageSize;
+        this.loadTableDate();
       },
-      handleCurrentChange() {
-
+      handleCurrentChange(currentPage) {
+        this.currentPage = currentPage;
+        this.loadTableDate();
       },
 
       //关闭
       handleClose() {
         this.dialogVisible = false;
+        this.loadTableDate();
       }
     }
   }
