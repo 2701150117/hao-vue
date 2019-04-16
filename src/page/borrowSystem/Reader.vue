@@ -18,26 +18,44 @@
     </div>
     <div class="table-class">
       <div class="page-button-class">
-        <el-button size="medium" plain @click="addUser">添加图书</el-button>
+        <el-button size="medium" plain @click="addUser">新增读者</el-button>
       </div>
       <hao-table :data="tableData" :label="labelData" :column-index="columnIndex"
                  :column-operation="columnOperation"></hao-table>
       <hao-pagination :total="total" :page-size="pageSize" :current-change="currentPage"
                       @sizeChange="handleSizeChange" @currenChange="handleCurrentChange"></hao-pagination>
     </div>
+    <ReaderDialog :dialog-visible="dialogVisible" :dialog-title="dialogTitle" @handleClose="handleClose"></ReaderDialog>
   </div>
 </template>
 
 <script>
+  import ReaderDialog from "./ReaderDialog";
+
   export default {
     name: "Reader",
+    components: {ReaderDialog},
     data: function () {
       return {
+        dialogVisible: false,
+        dialogTitle: '',
         searchForm: {
           userName: ''
         },
         tableData: [],
-        labelData: [],
+        labelData: [{
+          prop: 'userName',
+          name: '姓名',
+        }, {
+          prop: 'userNumber',
+          name: '身份证号码',
+        }, {
+          prop: 'userAddress',
+          name: '地址'
+        }, {
+          prop: 'userPhone',
+          name: '手机号'
+        }],
         columnIndex: {
           show: true,
           width: 50,
@@ -68,7 +86,8 @@
 
       },
       addUser() {
-
+        this.dialogTitle = '新增用户';
+        this.dialogVisible = true;
       },
       //分页
       handleSizeChange(pageSize) {
