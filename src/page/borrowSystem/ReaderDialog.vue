@@ -31,6 +31,7 @@
     data: function () {
       return {
         form: {
+          id: '',
           userName: '',
           userNumber: '',
           userAddress: '',
@@ -44,7 +45,18 @@
         this.$emit('handleClose', done);
       },
       submit() {
-
+        this.$http.post('/hao/user/saveOrUpdate', this.form, {emulateJSON: true}).then(reason => {
+          this.$notify({
+            title: '成功',
+            type: 'success'
+          });
+          this.closeDialog();
+        }, response => {
+          this.$notify({
+            title: '失败',
+            type: 'error'
+          });
+        })
       },
       clearForm() {
         this.$refs.form.resetFields();
@@ -54,6 +66,13 @@
           userAddress: '',
           userPhone: ''
         }
+      },
+      editForm(data) {
+        this.form.userId = data.userId;
+        this.form.userName = data.userName;
+        this.form.userAddress = data.userAddress;
+        this.form.userNumber = data.userNumber;
+        this.form.userPhone = data.userPhone;
       }
     }
   }

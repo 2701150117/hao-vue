@@ -23,21 +23,25 @@
       <hao-table :data="tableData" :label="labelData" :column-index="columnIndex"
                  :column-operation="columnOperation"></hao-table>
       <hao-pagination :total="total" :page-size="pageSize" :current-change="currentPage"
-                      @sizeChange="handleSizeChange" @currenChange="handleCurrentChange"></hao-pagination>
+                      @sizeChange="handleSizeChange" @currentChange="handleCurrentChange"></hao-pagination>
     </div>
     <BookDialog ref="bookDialog" :dialog-title="dialogTitle" :dialog-visible="dialogVisible"
                 @handleClose="handleClose"></BookDialog>
+    <Borrow ref="Borrow" :dialog-visible="borrowVisible" :book-id="bookId" @handleClose="handleCloseBorrow"></Borrow>
   </div>
 </template>
 
 <script>
   import BookDialog from "./BookDialog";
+  import Borrow from "./Borrow";
 
   export default {
     name: "Book",
-    components: {BookDialog},
+    components: {Borrow, BookDialog},
     data: function () {
       return {
+        bookId: '',
+        borrowVisible: false,
         searchForm: {
           bookName: '',
         },
@@ -50,6 +54,10 @@
         }, {
           prop: 'createDate',
           name: '图书入库时间',
+        }, {
+          prop: 'status',
+          name: '状态',
+          formatter: this.statusFormat
         }],
         tableData: [],
         columnIndex: {
@@ -65,6 +73,10 @@
             name: '编辑',
             icon: 'el-icon-delete',
             click: this.deleteClick,
+          }, {
+            name: '借出',
+            icon: 'el-icon-view',
+            click: this.borrowClick,
           }]
         },
 
@@ -78,26 +90,48 @@
       }
     },
     created() {
-      this.loadTableDate();
+      this.loadTableData();
     },
     methods: {
+      handleCloseBorrow() {
+        this.borrowVisible = false;
+        this.loadTableData();
+      },
+      statusFormat(row, column, status) {
+        return status === 1 ? '在库' : '已借出';
+      },
       deleteClick(row) {
         let entity = {
           bookId: row.bookId,
           bookName: row.bookName
         };
-        this.$http.delete('/hao/book/deleteBook', {params: entity}).then(response => {
+        this.$confirm('此操作将永久删除, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$http.delete('/hao/book/deleteBook', {params: entity}).then(response => {
+            this.$message({
+              title: '成功',
+              type: 'success'
+            });
+            this.loadTableData();
+          }, response => {
+            this.$message({
+              title: '失败',
+              type: 'error'
+            });
+          })
+        }).catch(() => {
           this.$message({
-            showClose: true,
-            message: '删除成功',
-            type: 'success'
+            type: 'info',
+            message: '已取消删除'
           });
-          this.loadTableDate();
-        })
+        });
       },
 
       //加载表格
-      loadTableDate() {
+      loadTableData() {
         let self = this;
         let entity = {
           bookName: self.searchForm.bookName,
@@ -107,9 +141,7 @@
         self.$http.get('/hao/book/getBook', {params: entity}).then(response => {
           self.tableData = response.body.page.list;
           self.total = response.body.page.total;
-        }, response => {
-          console.log(response);
-        })
+        });
       },
 
       //添加书籍
@@ -121,17 +153,23 @@
       //分页
       handleSizeChange(pageSize) {
         this.pageSize = pageSize;
-        this.loadTableDate();
+        this.loadTableData();
       },
       handleCurrentChange(currentPage) {
+        debugger;
         this.currentPage = currentPage;
-        this.loadTableDate();
+        this.loadTableData();
       },
 
       //关闭
       handleClose() {
         this.dialogVisible = false;
-        this.loadTableDate();
+        this.loadTableData();
+      },
+      borrowClick(row) {
+        this.bookId = row.bookId;
+        this.$refs.Borrow.loadTableData();
+        this.borrowVisible = true;
       }
     }
   }

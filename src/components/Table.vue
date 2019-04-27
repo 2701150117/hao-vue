@@ -1,5 +1,5 @@
 <template>
-  <el-table :data="data" stripe>
+  <el-table :data="data" stripe @row-click="rowClick"  highlight-current-row>
     <el-table-column v-if="columnIndex.show" type="index"
                      :label="columnIndex.name" :width="columnIndex.width"></el-table-column>
     <el-table-column v-for="(item, index) in label" :prop="item.prop" :key="index" :label="item.name"
@@ -20,7 +20,11 @@
   export default {
     name: "Table",
     props: ['data', 'label', 'columnIndex', 'columnOperation'],
-    methods: {}
+    methods: {
+      rowClick(val) {
+        this.$emit('rowClick', val);
+      }
+    }
   }
 </script>
 

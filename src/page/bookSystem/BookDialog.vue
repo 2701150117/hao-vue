@@ -41,7 +41,7 @@
       //保存操作
       submit() {
         let self = this;
-        self.$http.post('/hao/book/saveOrUpdateBook', self.form, {emulateJSON: true}).then(response =>{
+        self.$http.post('/hao/book/saveOrUpdateBook', self.form, {emulateJSON: true}).then(response => {
           this.$notify({
             title: '成功',
             type: 'success'

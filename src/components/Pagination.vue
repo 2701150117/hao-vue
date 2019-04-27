@@ -12,14 +12,11 @@
     name: "Pagination.vue",
     props: ['currentPage', 'total', 'pageSize'],
     methods: {
-      sizeChange() {
-
-      },
       currentChange(val) {
-        this.$emit('current-change', val);
+        this.$emit('currentChange', val);
       },
       sizeChange(val) {
-        this.$emit('size-change', val);
+        this.$emit('sizeChange', val);
       }
     }
   }

@@ -10,7 +10,7 @@
           </el-col>
           <el-col :span="5">
             <el-form-item>
-              <el-button type="primary">查询</el-button>
+              <el-button type="primary" @click="loadTableData">查询</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -22,10 +22,11 @@
       </div>
       <hao-table :data="tableData" :label="labelData" :column-index="columnIndex"
                  :column-operation="columnOperation"></hao-table>
-      <hao-pagination :total="total" :page-size="pageSize" :current-change="currentPage"
-                      @sizeChange="handleSizeChange" @currenChange="handleCurrentChange"></hao-pagination>
+      <hao-pagination :total="total" :page-size="pageSize" :current-page="currentPage"
+                      @size-change="handleSizeChange" @current-change="handleCurrentChange"></hao-pagination>
     </div>
-    <ReaderDialog :dialog-visible="dialogVisible" :dialog-title="dialogTitle" @handleClose="handleClose"></ReaderDialog>
+    <ReaderDialog ref="ReaderDialog" :dialog-visible="dialogVisible" :dialog-title="dialogTitle"
+                  @handleClose="handleClose"></ReaderDialog>
   </div>
 </template>
 
@@ -74,16 +75,43 @@
             click: this.deleteClick,
           }]
         },
+        pageSize: 10,
+        currentPage: 1,
+        total: 0,
       }
     },
     created() {
+      this.loadTableData();
     },
     methods: {
       editClick(row) {
-
+        this.$refs.ReaderDialog.editForm(row);
+        this.dialogVisible = true;
+      },
+      loadTableData() {
+        let entity = {
+          userName: this.searchForm.userName,
+          pageSize: this.pageSize,
+          currentPage: this.currentPage
+        };
+        this.$http.get('/hao/user/search', {params: entity}).then(reason => {
+          this.tableData = reason.body.page.list;
+          this.total = reason.body.page.total;
+        })
       },
       deleteClick(row) {
-
+        this.$http.delete('hao/user/delete', {params: row}).then(reason => {
+          this.$notify({
+            title: '成功',
+            type: 'success'
+          });
+          this.loadTableData();
+        }, response => {
+          this.$notify({
+            title: '失败',
+            type: 'error'
+          });
+        })
       },
       addUser() {
         this.dialogTitle = '新增用户';
@@ -92,17 +120,17 @@
       //分页
       handleSizeChange(pageSize) {
         this.pageSize = pageSize;
-        this.loadTableDate();
+        this.loadTableData();
       },
       handleCurrentChange(currentPage) {
         this.currentPage = currentPage;
-        this.loadTableDate();
+        this.loadTableData();
       },
 
       //关闭
       handleClose() {
         this.dialogVisible = false;
-        this.loadTableDate();
+        this.loadTableData();
       }
     }
   }
