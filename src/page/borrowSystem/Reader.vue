@@ -23,7 +23,7 @@
       <hao-table :data="tableData" :label="labelData" :column-index="columnIndex"
                  :column-operation="columnOperation"></hao-table>
       <hao-pagination :total="total" :page-size="pageSize" :current-page="currentPage"
-                      @size-change="handleSizeChange" @current-change="handleCurrentChange"></hao-pagination>
+                      @sizeChange="handleSizeChange" @currentChange="handleCurrentChange"></hao-pagination>
     </div>
     <ReaderDialog ref="ReaderDialog" :dialog-visible="dialogVisible" :dialog-title="dialogTitle"
                   @handleClose="handleClose"></ReaderDialog>

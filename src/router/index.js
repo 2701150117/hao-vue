@@ -8,6 +8,9 @@ Vue.use(Router);
 import book from '../page/bookSystem/Book'
 import borrowSystem from '../page/borrowSystem/BorrowSystem'
 import reader from '../page/borrowSystem/Reader'
+import history from '../page/borrowSystem/History'
+import system from '../page/system/System'
+import loginManage from '../page/system/LoginManage'
 
 //配置组件
 import Table from '../components/Table'
@@ -27,13 +30,26 @@ export default new Router({
         name: 'book',
         component: book,
       }, {
-        path: 'borrowSystem',
+        path: '/borrowSystem',
         name: 'borrowSystem',
         component: borrowSystem,
         children: [{
           path: '/reader',
           name: 'reader',
           component: reader,
+        }, {
+          path: '/history',
+          name: 'history',
+          component: history
+        }]
+      }, {
+        path: '/system',
+        name: 'system',
+        component: system,
+        children: [{
+          path: '/loginManage',
+          name: 'loginManage',
+          component: loginManage
         }]
       }]
     }

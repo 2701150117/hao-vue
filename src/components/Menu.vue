@@ -12,23 +12,23 @@
               <i class="el-icon-news"></i>
               <span slot="title">图书系统</span>
             </el-menu-item>
-            <el-submenu index="borrowSystem">
+            <el-submenu index="/borrowSystem">
               <template slot="title">
                 <i class="el-icon-view"></i>
                 <span slot="title">借阅系统</span>
               </template>
               <el-menu-item-group>
                 <el-menu-item index="/reader">读者管理</el-menu-item>
-                <el-menu-item index="libraryinformation">借阅记录</el-menu-item>
+                <el-menu-item index="/history">借阅记录</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
-            <el-submenu index="4">
+            <el-submenu index="/system">
               <template slot="title">
                 <i class="el-icon-setting"></i>
                 <span>系统管理</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item index="readerlogin">员工登录管理</el-menu-item>
+                <el-menu-item index="/loginManage">登录管理</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
           </el-menu>
