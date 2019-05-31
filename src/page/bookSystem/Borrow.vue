@@ -82,35 +82,44 @@
         this.loadTableData();
       },
       submit() {
-        this.$confirm('确认借出？借出用户: ' + this.currentUser.userName + ' , 借出期限为三个月?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          let entity = {
-            bookId: this.bookId,
-            userId: this.currentUser.userId
-          };
-          console.log(entity);
-          this.$http.post('/hao/borrow/borrowBookByUserId', entity, {emulateJSON: true}).then(response => {
-            this.$message({
-              title: '成功',
-              type: 'success',
-              message: '借还时间: ' + response.body.data
-            });
-            this.closeDialog();
-          }, response => {
-            this.$message({
-              title: '失败',
-              type: 'error'
-            });
-          });
-        }).catch(() => {
+        if (this.currentUser == null) {
           this.$message({
-            type: 'info',
-            message: '已取消借出'
+            type: 'warning',
+            message: '请选择用户'
           });
-        });
+        } else {
+          this.$confirm('确认借出？借出用户: ' + this.currentUser.userName + ' , 借出期限为三个月?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            let entity = {
+              bookId: this.bookId,
+              userId: this.currentUser.userId
+            };
+            this.$http.post('/hao/borrow/borrowBookByUserId', entity, {emulateJSON: true}).then(response => {
+              if (response.body.code === 1) {
+                this.$message({
+                  title: '成功',
+                  type: 'success',
+                  message: '借还时间: ' + response.body.data
+                });
+                this.closeDialog();
+              } else {
+                this.$message({
+                  title: '失败',
+                  type: 'error',
+                  message: response.body.msg
+                });
+              }
+            });
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消借出'
+            });
+          });
+        }
       },
 
       rowClick(row) {

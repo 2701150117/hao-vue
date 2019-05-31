@@ -1,5 +1,5 @@
 <template>
-  <el-table :data="data" stripe @row-click="rowClick"  highlight-current-row>
+  <el-table :data="data" @row-click="rowClick"  highlight-current-row>
     <el-table-column v-if="columnIndex.show" type="index"
                      :label="columnIndex.name" :width="columnIndex.width"></el-table-column>
     <el-table-column v-for="(item, index) in label" :prop="item.prop" :key="index" :label="item.name"
@@ -9,7 +9,7 @@
         <el-tooltip v-for="(item, key) in columnOperation.operate" :key="key"
                     v-if='item.show == null ? true : item.show'
                     :content="item.name" placement="top">
-          <el-button @click="item.click(scope.row)" type="text" :icon="item.icon"></el-button>
+          <el-button @click="item.click(scope.row)" style="padding: 0" type="text" :icon="item.icon"></el-button>
         </el-tooltip>
       </template>
     </el-table-column>

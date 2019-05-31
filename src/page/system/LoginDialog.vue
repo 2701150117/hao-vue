@@ -53,10 +53,16 @@
             });
             this.closeDialog();
           } else {
-            this.$notify.error(reason.body.msg)
+            this.$notify({
+              title: reason.body.msg,
+              type: 'error'
+            })
           }
         }, reason => {
-          this.$notify.error(reason.body.msg)
+          this.$notify({
+            title: reason.body.msg,
+            type: 'error'
+          })
         });
       }
     }

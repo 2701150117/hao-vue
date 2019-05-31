@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="search-class">
-      <el-form ref="form" label-position="right" :model="searchForm" label-width="60px">
+      <el-form ref="form" label-position="right" :model="searchForm" label-width="80px">
         <el-row>
           <el-col :span="6">
             <el-form-item label="姓名">

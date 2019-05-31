@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="search-class">
-      <el-form ref="form" label-position="left" :model="searchForm" label-width="60px">
+      <el-form ref="form" label-position="right" :model="searchForm" label-width="80px">
         <el-row>
           <el-col :span="6">
             <el-form-item label="工号" prop="id">
@@ -55,7 +55,8 @@
           name: '登录名'
         }, {
           prop: 'createDate',
-          name: '注册时间'
+          name: '注册时间',
+          formatter: this.dateFormat
         }],
         tableData: [],
         columnIndex: {
@@ -64,7 +65,7 @@
         },
 
         columnOperation: {
-          show: true,
+          show: localStorage.getItem('author') === 'admin',
           width: 150,
           name: '操作',
           operate: [{
@@ -87,13 +88,16 @@
       this.loadTableData();
     },
     methods: {
+      dateFormat(row, column, executeTime) {
+        let date = new Date(executeTime);
+        return date.getFullYear() + '年' + date.getMonth() + '月' + date.getDate() + '日';
+      },
       //分页
       handleSizeChange(pageSize) {
         this.pageSize = pageSize;
         this.loadTableData();
       },
       handleCurrentChange(currentPage) {
-        debugger;
         this.currentPage = currentPage;
         this.loadTableData();
       },

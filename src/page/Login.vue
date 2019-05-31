@@ -47,8 +47,14 @@
 
 <style>
   .login-panel {
-    width: 380px;
-    margin: 0 auto;
+    position: absolute;
+    width: 480px;
+    z-index: 1001;
+    padding: 20px;
+    top: 18%;
+    left: calc(50% - 240px);
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,0.1);
+    border-radius: 5px;
   }
 
   .login-panel .el-form-item {

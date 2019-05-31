@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="search-class">
-      <el-form ref="form" label-position="right" :model="searchForm" label-width="60px">
+      <el-form ref="form" label-position="right" :model="searchForm" label-width="80px">
         <el-row>
           <el-col :span="6">
             <el-form-item label="用户名" prop="userName">
@@ -42,12 +42,13 @@
         labelData: [{
           prop: 'userName',
           name: '用户名'
-        },{
+        }, {
           prop: 'bookName',
           name: '图书名',
         }, {
           prop: 'borrowStart',
-          name: '借出时间'
+          name: '借出时间',
+          formatter: this.dateFormat
         }, {
           prop: 'borrowEnd',
           name: '距离归还',
@@ -60,10 +61,14 @@
         },
 
         columnOperation: {
-          show: false,
+          show: true,
           width: 150,
           name: '操作',
-          operate: []
+          operate: [{
+            name: '归还',
+            icon: 'el-icon-delete',
+            click: this.backClick,
+          }]
         },
 
         pageSize: 10,
@@ -71,11 +76,14 @@
         total: 0,
       }
     },
-    created(){
+    created() {
       this.loadTableData();
     },
     methods: {
-      endTimeFormat(row, column, borrowEnd){
+      dateFormat(row, column, executeTime) {
+        return new Date(+new Date(new Date(executeTime).toJSON()) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '');
+      },
+      endTimeFormat(row, column, borrowEnd) {
         return '剩余 ' + borrowEnd + ' 天';
       },
       //分页
@@ -84,7 +92,6 @@
         this.loadTableData();
       },
       handleCurrentChange(currentPage) {
-        debugger;
         this.currentPage = currentPage;
         this.loadTableData();
       },
@@ -102,6 +109,27 @@
           self.total = response.body.page.total;
         });
       },
+      backClick(row) {
+        this.$confirm('确认归还？借出用户: ' + row.userName, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$http.delete('hao/borrow/delete', {params: {bookId: row.bookId, userId: row.userId}}).then(reason => {
+            this.$message({
+              title: '成功',
+              type: 'success',
+              message: '归还成功，返回库存'
+            });
+            this.loadTableData();
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消借出'
+          });
+        });
+      }
     }
   }
 </script>

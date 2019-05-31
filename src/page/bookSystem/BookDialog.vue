@@ -10,6 +10,12 @@
       <el-form-item label="图书名">
         <el-input v-model="form.bookName" auto-complete="off"></el-input>
       </el-form-item>
+      <el-form-item label="库存" class="select-form-class">
+        <el-select v-model="form.storage" placeholder="请选择" value="">
+          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"
+                     :disabled="item.disabled"></el-option>
+        </el-select>
+      </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="closeDialog">取 消</el-button>
@@ -27,7 +33,9 @@
         form: {
           bookId: '',
           bookName: '',
-        }
+          storage: 1,
+        },
+        options: [{value: 1, label: 1}, {value: 2, label: 2}, {value: 3, label: 3}, {value: 4, label: 4}],
       }
     },
     created() {
@@ -67,6 +75,8 @@
   }
 </script>
 
-<style scoped>
-
+<style>
+  .select-form-class .el-select {
+    width: 100%;
+  }
 </style>

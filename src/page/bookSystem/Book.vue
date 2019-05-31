@@ -1,16 +1,11 @@
 <template>
   <div>
     <div class="search-class">
-      <el-form ref="form" label-position="right" :model="searchForm" label-width="60px">
+      <el-form ref="form" label-position="right" :model="searchForm" label-width="80px">
         <el-row>
           <el-col :span="6">
             <el-form-item label="图书名">
               <el-input v-model="searchForm.bookName" clearable></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-form-item label="序列码">
-              <el-input v-model="searchForm.bookId" clearable></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="5">
@@ -62,9 +57,8 @@
           name: '图书入库时间',
           formatter: this.dateFormat
         }, {
-          prop: 'status',
-          name: '状态',
-          formatter: this.statusFormat
+          prop: 'storage',
+          name: '库存',
         }],
         tableData: [],
         columnIndex: {
@@ -77,7 +71,7 @@
           width: 150,
           name: '操作',
           operate: [{
-            name: '编辑',
+            name: '删除',
             icon: 'el-icon-delete',
             click: this.deleteClick,
           }, {
@@ -106,9 +100,6 @@
       handleCloseBorrow() {
         this.borrowVisible = false;
         this.loadTableData();
-      },
-      statusFormat(row, column, status) {
-        return status === 1 ? '在库' : '已借出';
       },
       deleteClick(row) {
         let entity = {
@@ -161,7 +152,6 @@
         this.loadTableData();
       },
       handleCurrentChange(currentPage) {
-        debugger;
         this.currentPage = currentPage;
         this.loadTableData();
       },
@@ -172,9 +162,16 @@
         this.loadTableData();
       },
       borrowClick(row) {
-        this.bookId = row.bookId;
-        this.$refs.Borrow.loadTableData();
-        this.borrowVisible = true;
+        if (row.storage > 0) {
+          this.bookId = row.bookId;
+          this.$refs.Borrow.loadTableData();
+          this.borrowVisible = true;
+        }else {
+          this.$notify({
+            type:'warning',
+            message: '库存为零，不可借出'
+          });
+        }
       }
     }
   }

@@ -1,11 +1,23 @@
 <template>
   <el-container class="main-height">
     <el-container class="main-height">
-      <el-header class="bg-blue text-float">
-        <el-col :span="12" style="text-align: left">
-          <el-image src="/static/img/logo.png" style="height: 60px; width: 320px"></el-image>
+      <el-header>
+        <el-col :span="20">
+          <el-menu :default-active="$route.path" class="el-menu-demo" mode="horizontal" router
+                   background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+            <el-menu-item index="/book">图书系统</el-menu-item>
+            <el-submenu index="/borrowSystem">
+              <template slot="title">借阅系统</template>
+              <el-menu-item index="/reader">读者管理</el-menu-item>
+              <el-menu-item index="/history">借阅记录</el-menu-item>
+            </el-submenu>
+            <el-submenu index="/system">
+              <template slot="title">系统管理</template>
+              <el-menu-item index="/loginManage">登录管理</el-menu-item>
+            </el-submenu>
+          </el-menu>
         </el-col>
-        <el-col :span="12" style="text-align: right;">
+        <el-col :span="4" class="bg-blue text-float">
           <el-dropdown trigger="click">
             <el-button type="text" icon="el-icon-user">{{currentUser}}</el-button>
             <el-dropdown-menu slot="dropdown">
@@ -16,7 +28,7 @@
         </el-col>
       </el-header>
       <el-container class="main-height">
-        <el-aside width="200px" class="main-height">
+        <!--<el-aside width="200px" class="main-height">
           <el-menu :default-active="$route.path" class="el-menu-vertical-demo" router
                    menu-trigger="hover">
             <el-menu-item index="/book">
@@ -39,19 +51,19 @@
                 <span>系统管理</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item index="/loginManage">登录管理</el-menu-item>
+                  <el-menu-item index="/loginManage">登录管理</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
           </el-menu>
-        </el-aside>
+        </el-aside>-->
         <el-container>
           <el-main style="background: #E9EEF3;">
             <router-view/>
           </el-main>
-          <el-footer class="foot">
-            <span class="text-foot">如有疑问，请follow作者--豪：<a href="http://github.com/2701150114">http://github.com/2701150114</a></span>
+          <!--<el-footer class="foot">
+            <span class="text-foot">如有疑问，请follow作者&#45;&#45;豪：<a href="http://github.com/2701150114">http://github.com/2701150114</a></span>
             <i class="el-icon-"></i>
-          </el-footer>
+          </el-footer>-->
         </el-container>
       </el-container>
     </el-container>
@@ -111,7 +123,7 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
   .bg-blue {
-    background: #034692;
+    background: #545c64;
   }
 
   .text-float {
