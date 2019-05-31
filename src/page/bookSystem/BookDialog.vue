@@ -3,7 +3,7 @@
     <span slot="title" class="dialog-title">
       {{dialogTitle}}
     </span>
-    <el-form :model="form" label-position="left" label-width="100px" class="user-form">
+    <el-form :model="form" label-position="left" label-width="100px" class="user-form" ref="form">
       <el-form-item label="图书识别码">
         <el-input v-model="form.bookId" auto-complete="off"></el-input>
       </el-form-item>
@@ -36,6 +36,15 @@
       //关闭弹出框
       closeDialog(done) {
         this.$emit('handleClose', done);
+        this.clear();
+      },
+
+      clear() {
+        this.$refs['form'].resetFields();
+        this.form = {
+          bookId: '',
+          bookName: '',
+        };
       },
 
       //保存操作

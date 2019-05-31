@@ -1,16 +1,21 @@
 <template>
   <div>
     <div class="search-class">
-      <el-form ref="form" :model="searchForm">
+      <el-form ref="form" label-position="right" :model="searchForm" label-width="60px">
         <el-row>
-          <el-col :span="5">
-            <el-form-item>
-              <el-input prefix-icon="el-icon-search" v-model="searchForm.bookName" clearable></el-input>
+          <el-col :span="6">
+            <el-form-item label="图书名">
+              <el-input v-model="searchForm.bookName" clearable></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="序列码">
+              <el-input v-model="searchForm.bookId" clearable></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="5">
             <el-form-item>
-              <el-button type="primary">查询</el-button>
+              <el-button type="primary" @click="loadTableData">查询</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -43,6 +48,7 @@
         bookId: '',
         borrowVisible: false,
         searchForm: {
+          bookId: '',
           bookName: '',
         },
         labelData: [{
@@ -54,6 +60,7 @@
         }, {
           prop: 'createDate',
           name: '图书入库时间',
+          formatter: this.dateFormat
         }, {
           prop: 'status',
           name: '状态',
@@ -93,6 +100,9 @@
       this.loadTableData();
     },
     methods: {
+      dateFormat(row, column, executeTime) {
+        return new Date(+new Date(new Date(executeTime).toJSON()) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '');
+      },
       handleCloseBorrow() {
         this.borrowVisible = false;
         this.loadTableData();
@@ -111,16 +121,10 @@
           type: 'warning'
         }).then(() => {
           this.$http.delete('/hao/book/deleteBook', {params: entity}).then(response => {
-            this.$message({
-              title: '成功',
-              type: 'success'
-            });
+            this.$message.success('成功');
             this.loadTableData();
           }, response => {
-            this.$message({
-              title: '失败',
-              type: 'error'
-            });
+            this.$message.error('失败');
           })
         }).catch(() => {
           this.$message({
@@ -134,6 +138,7 @@
       loadTableData() {
         let self = this;
         let entity = {
+          bookId: self.searchForm.bookId,
           bookName: self.searchForm.bookName,
           pageSize: self.pageSize,
           currentPage: self.currentPage

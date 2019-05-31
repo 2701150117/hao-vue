@@ -1,11 +1,16 @@
 <template>
   <div>
     <div class="search-class">
-      <el-form ref="form" :model="searchForm">
+      <el-form ref="form" label-position="right" :model="searchForm" label-width="60px">
         <el-row>
-          <el-col :span="5">
-            <el-form-item>
-              <el-input prefix-icon="el-icon-search" v-model="searchForm.userName" clearable></el-input>
+          <el-col :span="6">
+            <el-form-item label="姓名">
+              <el-input v-model="searchForm.userName" clearable></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="手机号">
+              <el-input v-model="searchForm.userPhone" clearable></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="5">
@@ -41,7 +46,8 @@
         dialogVisible: false,
         dialogTitle: '',
         searchForm: {
-          userName: ''
+          userName: '',
+          userPhone: ''
         },
         tableData: [],
         labelData: [{

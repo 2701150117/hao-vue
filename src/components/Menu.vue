@@ -2,11 +2,22 @@
   <el-container class="main-height">
     <el-container class="main-height">
       <el-header class="bg-blue text-float">
-        安徽科技图书库
+        <el-col :span="12" style="text-align: left">
+          <el-image src="/static/img/logo.png" style="height: 60px; width: 320px"></el-image>
+        </el-col>
+        <el-col :span="12" style="text-align: right;">
+          <el-dropdown trigger="click">
+            <el-button type="text" icon="el-icon-user">{{currentUser}}</el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item @click.native="out"><i class="el-icon-switch-button"></i>退出登录</el-dropdown-item>
+              <el-dropdown-item @click.native="edit"><i class="el-icon-key"></i>修改密码</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </el-col>
       </el-header>
       <el-container class="main-height">
         <el-aside width="200px" class="main-height">
-          <el-menu :default-active="$route.path" class="el-menu-vertical-demo" router :unique-opened="true"
+          <el-menu :default-active="$route.path" class="el-menu-vertical-demo" router
                    menu-trigger="hover">
             <el-menu-item index="/book">
               <i class="el-icon-news"></i>
@@ -52,13 +63,47 @@
     name: 'HelloWorld',
     data() {
       return {
+        currentUser: '',
         value3: null,
       }
+    },
+    created() {
+      this.currentUser = localStorage.getItem("author");
     },
     methods: {
       selectOne(key, keyPath) {
         console.log(key, keyPath);
       },
+      out() {
+        localStorage.clear();
+        this.$router.push('/login');
+      },
+      edit() {
+        let self = this;
+        self.$prompt('请输入密码', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+        }).then(({value}) => {
+          self.$http.post('/hao/login/update', {
+            id: localStorage.getItem('id'),
+            password: value,
+          }, {emulateJSON: true}).then(reason => {
+            if (reason.body.code === 1) {
+              self.$message({
+                type: 'success',
+                message: '你的密码是: ' + value
+              });
+            } else {
+              self.$message.error(reason.body.msg);
+            }
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消输入'
+          });
+        });
+      }
     }
   }
 </script>
@@ -66,7 +111,7 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
   .bg-blue {
-    background: #409EFF;
+    background: #034692;
   }
 
   .text-float {
@@ -97,5 +142,10 @@
 
   .text-foot a {
     color: #F56C6C;
+  }
+
+  .bg-blue .el-button {
+    color: white;
+    font-size: 22px;
   }
 </style>
